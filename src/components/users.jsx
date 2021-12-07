@@ -4,6 +4,7 @@ import api from "../api";
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
     const handleDelete = (users) => {
+        setUsers(prevState => prevState.filter(user => user !== users))
     }
     const renderPhrase = (number) => {
     }
@@ -24,15 +25,15 @@ const Users = () => {
                     <tr key={user.id}>
                         <td>{user.name}</td>
                         <td>{user.qualities.map((quality) => {
-                            return <span className={'badge bg-' + quality.color}>{quality.name}</span>
+                            return <span className={'badge m-1 bg-' + quality.color}>{quality.name}</span>
                         })}</td>
                         <td>{user.profession.name}</td>
                         <td>{user.completedMeetings}</td>
                         <td>{user.rate}</td>
                         <td>
                             <button className='badge bg-danger'
-                                    // onClick={handleDelete}>
-                                >Delete
+                                    onClick={ () => handleDelete(user)}>
+                                Delete
                             </button>
                         </td>
                     </tr>)}
