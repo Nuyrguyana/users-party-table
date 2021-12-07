@@ -1,15 +1,35 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import api from "../api";
 
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
+    const [count, setCount] = useState(users.length)
     const handleDelete = (users) => {
         setUsers(prevState => prevState.filter(user => user !== users))
     }
-    const renderPhrase = (number) => {
+    const formatCount = () => {
+         return users.length === 0 ? 'Никто с тобой не тусанет' :
+        users.length === 1 ? `${count} человек тусанет с тобой` :
+            users.length < 5 ? `${count} человека тусанет с тобой` :
+                `${count} человек тусанет с тобой`
     }
+    const getBageClasses = () => {
+        let classes = "badge m-2 "
+        classes += users.length === 0 ? "bg-danger" : "bg-primary"
+        return classes
+    }
+    const renderPhrase = (number) => {
+        setCount((prevState) => prevState - 1)
+    }
+    // const handleClick = (e) => {
+    //     const { renderPhrase, handleDelete} = this.props;
+    //
+    //     renderPhrase(e);
+    //     handleDelete(e);
+    // };
     return (
         <>
+            <span className={getBageClasses()}>{formatCount()}</span>
             <table className="table">
                 <thead>
                 <tr>
@@ -32,7 +52,9 @@ const Users = () => {
                         <td>{user.rate}</td>
                         <td>
                             <button className='badge bg-danger'
-                                    onClick={ () => handleDelete(user)}>
+                                    onClick={ () => handleDelete(user)}
+
+                            >
                                 Delete
                             </button>
                         </td>
