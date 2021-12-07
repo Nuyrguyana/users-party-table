@@ -6,6 +6,7 @@ const Users = () => {
     const [count, setCount] = useState(users.length)
     const handleDelete = (users) => {
         setUsers(prevState => prevState.filter(user => user !== users))
+        renderPhrase()
     }
     const formatCount = () => {
          return users.length === 0 ? 'Никто с тобой не тусанет' :
@@ -18,7 +19,7 @@ const Users = () => {
         classes += users.length === 0 ? "bg-danger" : "bg-primary"
         return classes
     }
-    const renderPhrase = (number) => {
+    const renderPhrase = () => {
         setCount((prevState) => prevState - 1)
     }
     // const handleClick = (e) => {
@@ -53,7 +54,6 @@ const Users = () => {
                         <td>
                             <button className='badge bg-danger'
                                     onClick={ () => handleDelete(user)}
-
                             >
                                 Delete
                             </button>
