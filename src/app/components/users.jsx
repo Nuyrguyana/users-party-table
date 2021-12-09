@@ -44,7 +44,7 @@ const Users = () => {
                     <td>{user.completedMeetings}</td>
                     <td>{user.rate}</td>
                     <td>
-                        <button className='badge bg-danger'
+                        <button className='btn bg-danger'
                                 onClick={ () => handleDelete(user)}
                         >
                             Delete
