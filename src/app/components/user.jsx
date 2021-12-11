@@ -1,8 +1,25 @@
 import React from "react";
-import Qualitie from "./qualitie"
+import Quality from "./qualitie"
 import BookMark from "./bookmark"
 
-const User = () => {
+const User = (props) => {
+    return <tr key={props.id}>
+        <td>{props.name}</td>
+        <td>{props.qualities.map((quality) => {
+            return Quality(quality)
+        })}</td>
+        <td>{props.profession.name}</td>
+        <td>{props.completedMeetings}</td>
+        <td>{props.rate}</td>
+        <td>
+            <button className='btn bg-danger'
+                    onClick={() => props.onClick(props._id)}
+            >
+                Delete
+            </button>
+        </td>
+    </tr>
+
 
 }
 

@@ -1,14 +1,14 @@
 import React, {useRef, useState} from "react";
 import api from "../../api";
 import SearchStatus from "./searchStatus";
-import Quality from "./qualitie";
+import User from "./user";
 
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
     const [count, setCount] = useState(users.length)
 
-    const handleDelete = (users) => {
-        setUsers(prevState => prevState.filter(user => user !== users))
+    const handleDelete = (id) => {//previous state (предыдущее состояние)
+        setUsers(prevState => prevState.filter(user => user._id !== id))
         renderPhrase()
     }
     const getBageClasses = () => {
@@ -20,7 +20,7 @@ const Users = () => {
         setCount((prevState) => prevState - 1)
     }
     const renderUsersTable = () => {
-       return <table className="table">
+        return <table className="table">
             <thead>
             <tr>
                 <th scope="col">Имя</th>
@@ -33,30 +33,16 @@ const Users = () => {
             </thead>
             <tbody>
             {users.map((user) =>
-                <tr key={user.id}>
-                    <td>{user.name}</td>
-                    <td>{user.qualities.map((quality) => {
-                        return Quality(quality)
-                    })}</td>
-                    <td>{user.profession.name}</td>
-                    <td>{user.completedMeetings}</td>
-                    <td>{user.rate}</td>
-                    <td>
-                        <button className='btn bg-danger'
-                                onClick={ () => handleDelete(user)}
-                        >
-                            Delete
-                        </button>
-                    </td>
-                </tr>)}
+                <User onClick={handleDelete} {...user}/>
+            )}
             </tbody>
         </table>
     }
 
     if (users.length === 0) {
         return <span className={getBageClasses()}>{SearchStatus(users)}</span>
-
     }
+
     return (
         <>
             <span className={getBageClasses()}>{SearchStatus(users)}</span>
