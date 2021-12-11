@@ -1,5 +1,7 @@
 import React, {useRef, useState} from "react";
-import api from "../api";
+import api from "../../api";
+import SearchStatus from "./searchStatus";
+import Quality from "./qualitie";
 
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
@@ -7,12 +9,6 @@ const Users = () => {
     const handleDelete = (users) => {
         setUsers(prevState => prevState.filter(user => user !== users))
         renderPhrase()
-    }
-    const formatCount = () => {
-         return users.length === 0 ? 'Никто с тобой не тусанет' :
-        users.length === 1 ? `${count} человек тусанет с тобой` :
-            users.length < 5 ? `${count} человека тусанет с тобой` :
-                `${count} человек тусанет с тобой`
     }
     const getBageClasses = () => {
         let classes = "badge m-2 "
@@ -31,6 +27,7 @@ const Users = () => {
                 <th scope="col">Профессия</th>
                 <th scope="col">Встретился, раз</th>
                 <th scope="col">Оценка</th>
+                <th scope="col">Избранное</th>
             </tr>
             </thead>
             <tbody>
@@ -38,7 +35,7 @@ const Users = () => {
                 <tr key={user.id}>
                     <td>{user.name}</td>
                     <td>{user.qualities.map((quality) => {
-                        return <span className={'badge m-1 bg-' + quality.color}>{quality.name}</span>
+                        return Quality(quality)
                     })}</td>
                     <td>{user.profession.name}</td>
                     <td>{user.completedMeetings}</td>
@@ -56,12 +53,12 @@ const Users = () => {
     }
 
     if (users.length === 0) {
-        return <span className={getBageClasses()}>{formatCount()}</span>
+        return <span className={getBageClasses()}>{SearchStatus(users)}</span>
 
     }
     return (
         <>
-            <span className={getBageClasses()}>{formatCount()}</span>
+            <span className={getBageClasses()}>{SearchStatus(users)}</span>
             {renderUsersTable()}
         </>
     )
