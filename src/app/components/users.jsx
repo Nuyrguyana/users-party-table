@@ -6,6 +6,7 @@ import Quality from "./qualitie";
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll())
     const [count, setCount] = useState(users.length)
+
     const handleDelete = (users) => {
         setUsers(prevState => prevState.filter(user => user !== users))
         renderPhrase()
