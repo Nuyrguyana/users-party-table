@@ -12,15 +12,15 @@ const User = (props) => {
         <td>{props.completedMeetings}</td>
         <td>{props.rate}</td>
         <td>
+            <BookMark/>
+        </td>
+        <td>
             <button className='btn bg-danger'
-                    onClick={() => props.onClick(props._id)}
+                    onClick={() => props.onDelete(props._id)}
             >
                 Delete
             </button>
         </td>
     </tr>
-
-
 }
-
 export default User

@@ -11,7 +11,8 @@ const Users = () => {
         setUsers(prevState => prevState.filter(user => user._id !== id))
         renderPhrase()
     }
-    const getBageClasses = () => {
+
+    const getBadgeClasses = () => {
         let classes = "badge m-2 "
         classes += users.length === 0 ? "bg-danger" : "bg-primary"
         return classes
@@ -33,19 +34,20 @@ const Users = () => {
             </thead>
             <tbody>
             {users.map((user) =>
-                <User onClick={handleDelete} {...user}/>
+                <User onDelete={handleDelete}
+                      {...user}/>
             )}
             </tbody>
         </table>
     }
 
     if (users.length === 0) {
-        return <span className={getBageClasses()}>{SearchStatus(users)}</span>
+        return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
     }
 
     return (
         <>
-            <span className={getBageClasses()}>{SearchStatus(users)}</span>
+            <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
             {renderUsersTable()}
         </>
     )
