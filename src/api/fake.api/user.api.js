@@ -15,7 +15,6 @@ const qualities = {
     uncertain: { _id: "67rdca3eeb7f6fgeed471103", name: "неуверенный", color: "dark" },
 
 }
-console.log(qualities)
 
 const users = [
     {
