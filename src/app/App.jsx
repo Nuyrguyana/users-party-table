@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import Users from "./components/users";
+import React from 'react';
+import Users from './components/users';
 // import SearchStatus from "./components/searchStatus"
-import api from "../api"
 
 const App = () => {
-return <Users/>
-}
+  return <Users />;
+};
 
-export default App
+export default App;

@@ -1,56 +1,75 @@
-import React, {useRef, useState} from "react";
-import api from "../../api";
-import SearchStatus from "./searchStatus";
-import User from "./user";
+import React, { useState } from 'react';
+import api from '../../api';
+import SearchStatus from './searchStatus';
+import User from './user';
+import Pagination from './pagination';
+import { paginate } from '../utils/paginate';
 
 const Users = () => {
-    const [users, setUsers] = useState(api.users.fetchAll())
-    const [count, setCount] = useState(users.length)
+  const [users, setUsers] = useState(api.users.fetchAll());
+  const [count, setCount] = useState(users.length);
+  const pageSize = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+  const handlePageChange = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
 
-    const handleDelete = (id) => {//previous state (предыдущее состояние)
-        setUsers(prevState => prevState.filter(user => user._id !== id))
-        renderPhrase()
-    }
+  const userCrop = paginate(users, currentPage, pageSize);
+  console.log(userCrop);
+  const handleDelete = (id) => {
+    setUsers((prevState) => prevState.filter((user) => user._id !== id));
+    renderPhrase();
+  };
 
-    const getBadgeClasses = () => {
-        let classes = "badge m-2 "
-        classes += users.length === 0 ? "bg-danger" : "bg-primary"
-        return classes
-    }
-    const renderPhrase = () => {
-        setCount((prevState) => prevState - 1)
-    }
-    const renderUsersTable = () => {
-        return <table className="table">
-            <thead>
-            <tr>
-                <th scope="col">Имя</th>
-                <th scope="col">Качества</th>
-                <th scope="col">Профессия</th>
-                <th scope="col">Встретился, раз</th>
-                <th scope="col">Оценка</th>
-                <th scope="col">Избранное</th>
-            </tr>
-            </thead>
-            <tbody>
-            {users.map((user) =>
-                <User onDelete={handleDelete}
-                      {...user}/>
-            )}
-            </tbody>
-        </table>
-    }
-
-    if (users.length === 0) {
-        return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
-    }
-
+  const getBadgeClasses = () => {
+    let classes = 'badge m-2 ';
+    classes += count === 0 ? 'bg-danger' : 'bg-primary';
+    return classes;
+  };
+  const renderPhrase = () => {
+    setCount((prevState) => prevState - 1);
+  };
+  const renderUsersTable = () => {
     return (
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Качества</th>
+                        <th scope="col">Профессия</th>
+                        <th scope="col">Встретился, раз</th>
+                        <th scope="col">Оценка</th>
+                        <th scope="col">Избранное</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {userCrop.map((user) => (
+                        <User
+                            onDelete={handleDelete}
+                            {...user}
+                            key={user._id}
+                        />
+                    ))}
+                </tbody>
+            </table>
+    );
+  };
+
+  if (count === 0) {
+    return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
+  }
+
+  return (
         <>
             <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
             {renderUsersTable()}
+            <Pagination
+                itemsCount={count}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+            />
         </>
-    )
-}
-export default Users
-
+  );
+};
+export default Users;
