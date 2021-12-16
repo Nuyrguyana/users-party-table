@@ -6,31 +6,31 @@ import Pagination from './pagination';
 import { paginate } from '../utils/paginate';
 
 const Users = () => {
-  const [users, setUsers] = useState(api.users.fetchAll());
-  const [count, setCount] = useState(users.length);
-  const pageSize = 4;
-  const [currentPage, setCurrentPage] = useState(1);
-  const handlePageChange = (pageIndex) => {
-    setCurrentPage(pageIndex);
-  };
+    const [users, setUsers] = useState(api.users.fetchAll());
+    const [count, setCount] = useState(users.length);
+    const pageSize = 4;
+    const [currentPage, setCurrentPage] = useState(1);
+    const handlePageChange = (pageIndex) => {
+        setCurrentPage(pageIndex);
+    };
 
-  const userCrop = paginate(users, currentPage, pageSize);
-  console.log(userCrop);
-  const handleDelete = (id) => {
-    setUsers((prevState) => prevState.filter((user) => user._id !== id));
-    renderPhrase();
-  };
+    const userCrop = paginate(users, currentPage, pageSize);
+    console.log(userCrop);
+    const handleDelete = (id) => {
+        setUsers((prevState) => prevState.filter((user) => user._id !== id));
+        renderPhrase();
+    };
 
-  const getBadgeClasses = () => {
-    let classes = 'badge m-2 ';
-    classes += count === 0 ? 'bg-danger' : 'bg-primary';
-    return classes;
-  };
-  const renderPhrase = () => {
-    setCount((prevState) => prevState - 1);
-  };
-  const renderUsersTable = () => {
-    return (
+    const getBadgeClasses = () => {
+        let classes = 'badge m-2 ';
+        classes += count === 0 ? 'bg-danger' : 'bg-primary';
+        return classes;
+    };
+    const renderPhrase = () => {
+        setCount((prevState) => prevState - 1);
+    };
+    const renderUsersTable = () => {
+        return (
             <table className="table">
                 <thead>
                     <tr>
@@ -52,14 +52,14 @@ const Users = () => {
                     ))}
                 </tbody>
             </table>
-    );
-  };
+        );
+    };
 
-  if (count === 0) {
-    return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
-  }
+    if (count === 0) {
+        return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
+    }
 
-  return (
+    return (
         <>
             <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
             {renderUsersTable()}
@@ -70,6 +70,6 @@ const Users = () => {
                 onPageChange={handlePageChange}
             />
         </>
-  );
+    );
 };
 export default Users;

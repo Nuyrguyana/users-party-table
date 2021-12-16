@@ -3,7 +3,7 @@ import Users from './components/users';
 // import SearchStatus from "./components/searchStatus"
 
 const App = () => {
-  return <Users />;
+    return <Users />;
 };
 
 export default App;
