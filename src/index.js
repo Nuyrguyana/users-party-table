@@ -1,4 +1,5 @@
 import React from 'react';
+// import {professions} from './api/fake.api/professions.api';
 import ReactDOM from 'react-dom';
 import './index.css';
 import reportWebVitals from './reportWebVitals';

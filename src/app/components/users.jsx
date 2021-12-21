@@ -4,10 +4,13 @@ import SearchStatus from './searchStatus';
 import User from './user';
 import Pagination from './pagination';
 import { paginate } from '../utils/paginate';
+import GroupList from './groupList';
 
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll());
     const [count, setCount] = useState(users.length);
+    // eslint-disable-next-line no-unused-vars
+    const [professions, setProfessions] = useState(api.professions.fetchAll());
     const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
     const handlePageChange = (pageIndex) => {
@@ -59,9 +62,14 @@ const Users = () => {
         return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
     }
 
+    const handleProfessionSelect = (params) => {
+        console.log(params);
+    };
+    console.log(professions);
     return (
         <>
             <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
+            <GroupList items={professions} onItemSelect={handleProfessionSelect}/>
             {renderUsersTable()}
             <Pagination
                 itemsCount={count}
