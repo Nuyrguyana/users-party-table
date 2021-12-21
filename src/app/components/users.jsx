@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../../api';
 import SearchStatus from './searchStatus';
 import User from './user';
@@ -9,16 +9,20 @@ import GroupList from './groupList';
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll());
     const [count, setCount] = useState(users.length);
-    // eslint-disable-next-line no-unused-vars
-    const [professions, setProfessions] = useState(api.professions.fetchAll());
-    const pageSize = 4;
     const [currentPage, setCurrentPage] = useState(1);
+    const [professions, setProfessions] = useState();
+    const [selectedProf, setSelectedProf] = useState();
+    const pageSize = 4;
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfessions(data));
+    }, []);
+
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
+    const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
+    const userCrop = paginate(filteredUsers, currentPage, pageSize);
 
-    const userCrop = paginate(users, currentPage, pageSize);
-    console.log(userCrop);
     const handleDelete = (id) => {
         setUsers((prevState) => prevState.filter((user) => user._id !== id));
         renderPhrase();
@@ -62,14 +66,19 @@ const Users = () => {
         return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
     }
 
-    const handleProfessionSelect = (params) => {
-        console.log(params);
+    const handleProfessionSelect = item => {
+        setSelectedProf(item);
     };
-    console.log(professions);
+
     return (
         <>
             <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
-            <GroupList items={professions} onItemSelect={handleProfessionSelect}/>
+            {professions && <GroupList
+                selectedItem={selectedProf}
+                items={professions}
+                onItemSelect={handleProfessionSelect}
+            />
+            }
             {renderUsersTable()}
             <Pagination
                 itemsCount={count}
