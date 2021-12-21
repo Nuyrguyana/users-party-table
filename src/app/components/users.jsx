@@ -14,13 +14,22 @@ const Users = () => {
     const [selectedProf, setSelectedProf] = useState();
     const pageSize = 4;
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data));
+        api.professions
+            .fetchAll()
+            .then((data) =>
+                setProfessions(
+                    data
+                )
+            );
     }, []);
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
-    const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
+    const filteredUsers =
+        selectedProf
+            ? users.filter((user) => user.profession === selectedProf)
+            : users;
     const userCrop = paginate(filteredUsers, currentPage, pageSize);
 
     const handleDelete = (id) => {
@@ -69,16 +78,22 @@ const Users = () => {
     const handleProfessionSelect = item => {
         setSelectedProf(item);
     };
-
+    const clearFilter = () => {
+        setSelectedProf();
+    };
     return (
         <>
             <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
-            {professions && <GroupList
-                selectedItem={selectedProf}
-                items={professions}
-                onItemSelect={handleProfessionSelect}
-            />
-            }
+            {professions && (
+                <>
+                    <GroupList
+                        selectedItem={selectedProf}
+                        items={professions}
+                        onItemSelect={handleProfessionSelect}
+                    />
+                    <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
+                </>
+            )}
             {renderUsersTable()}
             <Pagination
                 itemsCount={count}
