@@ -4,7 +4,8 @@ const SearchStatus = ({ length }) => {
         : length === 1
             ? `${length} человек тусанет с тобой`
             : length < 5
-                ? `${length} человека тусанет с тобой`
+                ? `${length} человека тусанут с тобой`
                 : `${length} человек тусанет с тобой`;
 };
+
 export default SearchStatus;

@@ -8,11 +8,10 @@ import GroupList from './groupList';
 
 const Users = () => {
     const [users, setUsers] = useState(api.users.fetchAll());
-    const [count, setCount] = useState(users.length);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
-    const pageSize = 4;
+    const pageSize = 2;
     useEffect(() => {
         api.professions
             .fetchAll()
@@ -22,19 +21,20 @@ const Users = () => {
                 )
             );
     }, []);
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedProf]);
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
     };
-    const filteredUsers =
-        selectedProf
-            ? users.filter((user) => user.profession === selectedProf)
-            : users;
+    const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
+    let count = filteredUsers.length;
     const userCrop = paginate(filteredUsers, currentPage, pageSize);
 
     const handleDelete = (id) => {
         setUsers((prevState) => prevState.filter((user) => user._id !== id));
-        renderPhrase();
+        count--;
     };
 
     const getBadgeClasses = () => {
@@ -42,32 +42,42 @@ const Users = () => {
         classes += count === 0 ? 'bg-danger' : 'bg-primary';
         return classes;
     };
-    const renderPhrase = () => {
-        setCount((prevState) => prevState - 1);
-    };
+
     const renderUsersTable = () => {
         return (
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Качества</th>
-                        <th scope="col">Профессия</th>
-                        <th scope="col">Встретился, раз</th>
-                        <th scope="col">Оценка</th>
-                        <th scope="col">Избранное</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {userCrop.map((user) => (
-                        <User
-                            onDelete={handleDelete}
-                            {...user}
-                            key={user._id}
-                        />
-                    ))}
-                </tbody>
-            </table>
+            <div className='d-flex flex-column'>
+                <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
+
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Качества</th>
+                            <th scope="col">Профессия</th>
+                            <th scope="col">Встретился, раз</th>
+                            <th scope="col">Оценка</th>
+                            <th scope="col">Избранное</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {userCrop.map((user) => (
+                            <User
+                                onDelete={handleDelete}
+                                {...user}
+                                key={user._id}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+                <div className='d-flex justify-content-center'>
+                    <Pagination
+                        itemsCount={count}
+                        pageSize={pageSize}
+                        currentPage={currentPage}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
+            </div>
         );
     };
 
@@ -82,26 +92,20 @@ const Users = () => {
         setSelectedProf();
     };
     return (
-        <>
-            <span className={getBadgeClasses()}>{SearchStatus(users)}</span>
+        <div className='d-flex'>
             {professions && (
-                <>
+                <div className="d-flex flex-column flex-shrink-0 p-3">
                     <GroupList
                         selectedItem={selectedProf}
                         items={professions}
                         onItemSelect={handleProfessionSelect}
                     />
                     <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
-                </>
+                </div>
             )}
             {renderUsersTable()}
-            <Pagination
-                itemsCount={count}
-                pageSize={pageSize}
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-            />
-        </>
+
+        </div>
     );
 };
 export default Users;
