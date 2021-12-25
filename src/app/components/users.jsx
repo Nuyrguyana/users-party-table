@@ -5,25 +5,29 @@ import User from './user';
 import Pagination from './pagination';
 import { paginate } from '../utils/paginate';
 import GroupList from './groupList';
+import PropTypes from 'prop-types';
 
 const Users = () => {
-    const [users, setUsers] = useState(api.users.fetchAll());
+    const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const pageSize = 2;
+
+    useEffect(() => {
+        api.users.default
+            .fetchAll()
+            .then((data) => setUsers(data));
+    }, []);
     useEffect(() => {
         api.professions
             .fetchAll()
-            .then((data) =>
-                setProfessions(
-                    data
-                )
-            );
+            .then((data) => setProfessions(data));
     }, []);
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
+    console.log(users);
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex);
@@ -107,5 +111,8 @@ const Users = () => {
 
         </div>
     );
+};
+Users.propTypes = {
+    users: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 export default Users;
