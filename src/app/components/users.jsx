@@ -40,7 +40,7 @@ const Users = () => {
     };
     const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
     let count = filteredUsers.length;
-    const sortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order]);
+    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
     const handleDelete = (id) => {
@@ -60,7 +60,7 @@ const Users = () => {
                 <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
                 <UsersTable
                     users={userCrop}
-                    handleDelete={handleDelete}
+                    onDelete={handleDelete}
                     onSort={handleSort}
                     selectedSort={sortBy}
                 />
