@@ -62,7 +62,7 @@ const Users = () => {
                     users={userCrop}
                     handleDelete={handleDelete}
                     onSort={handleSort}
-                    currentSort={sortBy}
+                    selectedSort={sortBy}
                 />
                 <div className='d-flex justify-content-center'>
                     <Pagination
