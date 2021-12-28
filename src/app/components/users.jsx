@@ -21,33 +21,7 @@ const Users = () => {
             .fetchAll()
             .then((data) => setUsers(data));
     }, []);
-    useEffect(() => {
-        api.professions
-            .fetchAll()
-            .then((data) => setProfessions(data));
-    }, []);
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [selectedProf]);
-    console.log(users);
 
-    const handlePageChange = (pageIndex) => {
-        setCurrentPage(pageIndex);
-    };
-
-    const handleSort = (item) => {
-        setSortBy(item);
-    };
-
-    const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
-    let count = filteredUsers.length;
-    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
-    const userCrop = paginate(sortedUsers, currentPage, pageSize);
-
-    const handleDelete = (id) => {
-        setUsers((prevState) => prevState.filter((user) => user._id !== id));
-        count--;
-    };
     const handleToggleBookMark = (id) => {
         setUsers(
             users.map((user) => {
@@ -60,61 +34,94 @@ const Users = () => {
         console.log(id);
     };
 
-    const getBadgeClasses = () => {
-        let classes = 'badge m-2 ';
-        classes += count === 0 ? 'bg-danger' : 'bg-primary';
-        return classes;
-    };
+    useEffect(() => {
+        api.professions
+            .fetchAll()
+            .then((data) => setProfessions(data));
+    }, []);
 
-    const renderUsersTable = () => {
-        return (
-            <div className='d-flex flex-column'>
-                <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
-                <UsersTable
-                    users={userCrop}
-                    onDelete={handleDelete}
-                    onSort={handleSort}
-                    selectedSort={sortBy}
-                    onToggleBookMark={handleToggleBookMark}
-                />
-                <div className='d-flex justify-content-center'>
-                    <Pagination
-                        itemsCount={count}
-                        pageSize={pageSize}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
-            </div>
-        );
-    };
-
-    if (count === 0) {
-        return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
-    }
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedProf]);
 
     const handleProfessionSelect = item => {
         setSelectedProf(item);
     };
-    const clearFilter = () => {
-        setSelectedProf();
-    };
-    return (
-        <div className='d-flex'>
-            {professions && (
-                <div className="d-flex flex-column flex-shrink-0 p-3">
-                    <GroupList
-                        selectedItem={selectedProf}
-                        items={professions}
-                        onItemSelect={handleProfessionSelect}
-                    />
-                    <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
-                </div>
-            )}
-            {renderUsersTable()}
 
-        </div>
-    );
+    const handlePageChange = (pageIndex) => {
+        setCurrentPage(pageIndex);
+    };
+
+    const handleSort = (item) => {
+        setSortBy(item);
+    };
+    console.log(users);
+    if (users.length > 0) {
+        const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
+        let count = filteredUsers.length;
+        const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
+        const userCrop = paginate(sortedUsers, currentPage, pageSize);
+
+        const handleDelete = (id) => {
+            setUsers((prevState) => prevState.filter((user) => user._id !== id));
+            count--;
+        };
+
+        const getBadgeClasses = () => {
+            let classes = 'badge m-2 ';
+            classes += count === 0 ? 'bg-danger' : 'bg-primary';
+            return classes;
+        };
+
+        const renderUsersTable = () => {
+            return (
+                <div className='d-flex flex-column'>
+                    <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
+                    <UsersTable
+                        users={userCrop}
+                        onDelete={handleDelete}
+                        onSort={handleSort}
+                        selectedSort={sortBy}
+                        onToggleBookMark={handleToggleBookMark}
+                    />
+                    <div className='d-flex justify-content-center'>
+                        <Pagination
+                            itemsCount={count}
+                            pageSize={pageSize}
+                            currentPage={currentPage}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                </div>
+            );
+        };
+
+        if (count === 0) {
+            return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
+        }
+
+        const clearFilter = () => {
+            setSelectedProf();
+        };
+        return (
+            <div className='d-flex'>
+                {professions && (
+                    <div className="d-flex flex-column flex-shrink-0 p-3">
+                        <GroupList
+                            selectedItem={selectedProf}
+                            items={professions}
+                            onItemSelect={handleProfessionSelect}
+                        />
+                        <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
+                    </div>
+                )}
+                {renderUsersTable()}
+
+            </div>
+        );
+    } else {
+        return 'loading...';
+    }
 };
 Users.propTypes = {
     users: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
