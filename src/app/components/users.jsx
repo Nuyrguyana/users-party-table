@@ -38,6 +38,7 @@ const Users = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
+
     const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
     let count = filteredUsers.length;
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
@@ -46,6 +47,17 @@ const Users = () => {
     const handleDelete = (id) => {
         setUsers((prevState) => prevState.filter((user) => user._id !== id));
         count--;
+    };
+    const handleToggleBookMark = (id) => {
+        setUsers(
+            users.map((user) => {
+                if (user._id === id) {
+                    return { ...user, bookmark: !user.bookmark };
+                }
+                return user;
+            })
+        );
+        console.log(id);
     };
 
     const getBadgeClasses = () => {
@@ -63,6 +75,7 @@ const Users = () => {
                     onDelete={handleDelete}
                     onSort={handleSort}
                     selectedSort={sortBy}
+                    onToggleBookMark={handleToggleBookMark}
                 />
                 <div className='d-flex justify-content-center'>
                     <Pagination

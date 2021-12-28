@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Arrow from './arrowSort';
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
@@ -11,6 +12,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         } else {
             onSort({ path: item, order: 'asc' });
         }
+        return <Arrow />;
     };
     return <thead>
         <tr>
