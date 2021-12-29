@@ -3,11 +3,17 @@ import PropTypes from 'prop-types';
 import ArrowSort from './arrowSort';
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
-    const [arrow, setArrow] = useState(false);
+    const initialArrowState = {
+        name: false,
+        professions: false,
+        completedMeetings: false,
+        rate: false,
+        bookmark: false
+    };
+    const [arrow, setArrow] = useState(initialArrowState);
+
     const handleSort = (item) => {
-        if (!arrow) {
-            setArrow(prevState => !prevState);
-        }
+        manageArrowState(item);
         if (selectedSort.path === item) {
             onSort({
                 ...selectedSort,
@@ -18,12 +24,28 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         }
     };
     const handleToggleArrow = (column) => {
-        if (arrow) {
-            console.log('column', column);
+        if (arrow[column]) {
             if ((column !== 'qualities') && (column !== 'delete')) {
                 return <ArrowSort/>;
             }
         }
+    };
+    const manageArrowState = (columnName) => {
+        if (columnName === 'profession.name') {
+            columnName = 'professions';
+        }
+        setArrow((prevState) => {
+            prevState.name = false;
+            prevState.professions = false;
+            prevState.completedMeetings = false;
+            prevState.rate = false;
+            prevState.bookmark = false;
+            return prevState;
+        });
+        setArrow((prevState) => {
+            prevState[columnName] = true;
+            return prevState;
+        });
     };
     return <thead>
         <tr>
