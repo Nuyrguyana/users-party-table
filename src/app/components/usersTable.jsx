@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import BookMark from './bookmark';
 import QualitiesList from './qualitiesList';
 import Table from './table';
-// import Arrow from './arrowSort';
 
 const UsersTable = ({ users, onDelete, onSort, selectedSort }) => {
     const columns = {

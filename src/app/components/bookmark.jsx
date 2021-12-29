@@ -31,9 +31,9 @@ const BookMark = () => {
         setBookmark((prevState) => !prevState);
     };
     return (
-        <button onClick={() => handleToggleBookmark()}>
+        <i onClick={() => handleToggleBookmark()}>
             {bookmark ? fillBookmark : emptyBookmark}
-        </button>
+        </i>
     );
 };
 

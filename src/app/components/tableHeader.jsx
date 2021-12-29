@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Arrow from './arrowSort';
+import ArrowSort from './arrowSort';
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
@@ -12,7 +12,12 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
         } else {
             onSort({ path: item, order: 'asc' });
         }
-        return <Arrow />;
+    };
+    const handleArrowClick = (column) => {
+        console.log('column', column);
+        if ((column !== 'qualities') && (column !== 'delete')) {
+            return <ArrowSort/>;
+        }
     };
     return <thead>
         <tr>
@@ -23,6 +28,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                     scope="col"
                 >
                     {columns[column].name}
+                    {handleArrowClick(column)}
                 </th>
             ))}
         </tr>
