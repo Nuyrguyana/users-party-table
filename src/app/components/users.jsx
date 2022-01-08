@@ -31,7 +31,6 @@ const Users = () => {
                 return user;
             })
         );
-        console.log(id);
     };
 
     useEffect(() => {
@@ -55,7 +54,6 @@ const Users = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
-    console.log(users);
     if (users.length > 0) {
         const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
         let count = filteredUsers.length;
