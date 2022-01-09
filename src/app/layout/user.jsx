@@ -23,8 +23,8 @@ const User = ({ id }) => {
             <h2>{user.name}</h2>
             <h3>{user.profession.name}</h3>
             {user.qualities.map((qual) => (<Quality key={qual._id} {...qual} />))}
-            <h5>{user.completedMeetings}</h5>
-            <h3>{user.rate}</h3>
+            <h5>completedMeetings: {user.completedMeetings}</h5>
+            <h3>rate: {user.rate}</h3>
             <button onClick={() => { handleAllUsers(); }}>
             Все пользователи
             </button>
