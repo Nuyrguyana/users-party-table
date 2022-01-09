@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 
-const Users = () => {
+const MainUsers = () => {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -121,7 +121,7 @@ const Users = () => {
         return 'loading...';
     }
 };
-Users.propTypes = {
+MainUsers.propTypes = {
     users: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
-export default Users;
+export default MainUsers;

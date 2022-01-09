@@ -2,15 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const NavBar = () => {
-    return (<ul>
-        <li>
-            <Link to='/main'>Main</Link>
+    return (<ul className="nav">
+        <li className="nav-item">
+            <Link className="nav-link active" aria-current="page" to='/main'>Main</Link>
         </li>
-        <li>
-            <Link to='/login'>Login</Link>
+        <li className="nav-item">
+            <Link className="nav-link" to='/login'>Login</Link>
         </li>
-        <li>
-            <Link to='/users'>Users</Link>
+        <li className="nav-item">
+            <Link className="nav-link" to='/users'>Users</Link>
         </li>
     </ul>
     );
