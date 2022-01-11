@@ -12,8 +12,15 @@ const Login = () => {
         }));
     };
     const validatorConfig = {
-        email: { isRequired: { message: 'Электронная почта обязательна для заполнения' } },
-        password: { isRequired: { message: 'Пароль обязателен для заполнения' } }
+        email: {
+            isRequired: { message: 'Электронная почта обязательна для заполнения' },
+            isEmail: {
+                message: 'Email введен не корректно'
+            }
+        },
+        password: {
+            isRequired: { message: 'Пароль обязателен для заполнения' }
+        }
     };
     useEffect(() => {
         validate();
