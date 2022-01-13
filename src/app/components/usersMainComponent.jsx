@@ -21,7 +21,7 @@ const UsersMainComponent = () => {
     const params = useParams();
     // const { search } = window.location;
     // const query = new URLSearchParams(search).get('s');
-    const [searchQuery, setSearchQuery] = useState();
+    const [searchQuery, setSearchQuery] = useState('');
     const { userId } = params;
 
     useEffect(() => {
@@ -52,8 +52,6 @@ const UsersMainComponent = () => {
     }, [selectedProf]);
 
     const filterUsers = (users, query) => {
-        console.log('users', users);
-        console.log('query', query);
         if (!query) {
             return users;
         }
@@ -74,13 +72,20 @@ const UsersMainComponent = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
+    // отрисовка карточки пользователя в зависимости от наличия параметров(id пользователя) запроса
     if (userId) {
         return <User id = {userId}/>;
     } else {
+        // пока массив пользователей не подтянулся, отображать Loading...
         if (users.length > 0) {
             const filteredBySearchUsers = filterUsers(users, searchQuery);
             let filteredByProfessionsUsers;
+            // если выбрана профессия то фильтруем по профессиям, если нет - по поиску
             if (selectedProf) {
+                // если в поле ввода есть текст, то при выбранной профессии сбросить набранный текст
+                if (searchQuery) {
+                    setSearchQuery('');
+                }
                 filteredByProfessionsUsers = users.filter((user) => user.profession === selectedProf);
             } else {
                 filteredByProfessionsUsers = filteredBySearchUsers;
@@ -146,10 +151,6 @@ const UsersMainComponent = () => {
                             <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
                         </div>
                     )}
-                    {/* <SearchBar */}
-                    {/*    searchQuery={searchQuery} */}
-                    {/*    setSearchQuery={setSearchQuery} */}
-                    {/* /> */}
                     {renderUsersTable()}
 
                 </div>

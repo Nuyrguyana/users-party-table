@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const SearchBar = ({ searchQuery, setSearchQuery }) => {
-    console.log('sea', searchQuery);
-    console.log('set', setSearchQuery);
+    console.log('searchQuery', searchQuery);
     return (
         <form>
             <input
