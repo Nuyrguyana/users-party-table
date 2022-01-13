@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
-import User from '../layout/user';
+import UserCard from '../layout/userCard';
+import SearchBar from './searchBar';
 
 const UsersMainComponent = () => {
     const [users, setUsers] = useState([]);
@@ -18,6 +19,9 @@ const UsersMainComponent = () => {
     const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' });
     const pageSize = 8;
     const params = useParams();
+    // const { search } = window.location;
+    // const query = new URLSearchParams(search).get('s');
+    const [searchQuery, setSearchQuery] = useState('');
     const { userId } = params;
 
     useEffect(() => {
@@ -47,6 +51,16 @@ const UsersMainComponent = () => {
         setCurrentPage(1);
     }, [selectedProf]);
 
+    const filterUsers = (users, query) => {
+        if (!query) {
+            return users;
+        }
+        return users.filter((user) => {
+            const userName = user.name.toLowerCase();
+            return userName.includes(query);
+        });
+    };
+
     const handleProfessionSelect = item => {
         setSelectedProf(item);
     };
@@ -58,14 +72,26 @@ const UsersMainComponent = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
+    // отрисовка карточки пользователя в зависимости от наличия параметров(id пользователя) запроса
     if (userId) {
-        console.log(userId);
-        return <User id = {userId}/>;
+        return <UserCard id = {userId}/>;
     } else {
+        // пока массив пользователей не подтянулся, отображать Loading...
         if (users.length > 0) {
-            const filteredUsers = selectedProf ? users.filter((user) => user.profession === selectedProf) : users;
-            let count = filteredUsers.length;
-            const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
+            const filteredBySearchUsers = filterUsers(users, searchQuery);
+            let filteredByProfessionsUsers;
+            // если выбрана профессия то фильтруем по профессиям, если нет - по поиску
+            if (selectedProf) {
+                // если в поле ввода есть текст, то при выбранной профессии сбросить набранный текст
+                if (searchQuery) {
+                    setSearchQuery('');
+                }
+                filteredByProfessionsUsers = users.filter((user) => user.profession === selectedProf);
+            } else {
+                filteredByProfessionsUsers = filteredBySearchUsers;
+            }
+            let count = filteredByProfessionsUsers.length;
+            const sortedUsers = _.orderBy(filteredByProfessionsUsers, [sortBy.path], [sortBy.order]);
             const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
             const handleDelete = (id) => {
@@ -83,6 +109,10 @@ const UsersMainComponent = () => {
                 return (
                     <div className='d-flex flex-column'>
                         <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
+                        <SearchBar
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
+                        />
                         <UsersTable
                             users={userCrop}
                             onDelete={handleDelete}
