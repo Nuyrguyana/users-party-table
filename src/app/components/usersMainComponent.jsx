@@ -58,7 +58,6 @@ const UsersMainComponent = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
-    // depending on params from Route
     if (userId) {
         console.log(userId);
         return <User id = {userId}/>;
