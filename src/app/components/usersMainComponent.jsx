@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import UsersTable from './usersTable';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
-import User from '../layout/user';
+import UserCard from '../layout/userCard';
 import SearchBar from './searchBar';
 
 const UsersMainComponent = () => {
@@ -74,7 +74,7 @@ const UsersMainComponent = () => {
     };
     // отрисовка карточки пользователя в зависимости от наличия параметров(id пользователя) запроса
     if (userId) {
-        return <User id = {userId}/>;
+        return <UserCard id = {userId}/>;
     } else {
         // пока массив пользователей не подтянулся, отображать Loading...
         if (users.length > 0) {

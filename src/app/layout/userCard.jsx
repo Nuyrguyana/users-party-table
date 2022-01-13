@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../../api';
 import Quality from '../components/qualitie';
-const User = ({ id }) => {
+const UserCard = ({ id }) => {
     console.log(id);
     const [user, setUser] = useState();
     const history = useHistory();
@@ -33,7 +33,7 @@ const User = ({ id }) => {
         return 'Loading...';
     }
 };
-User.propTypes = {
+UserCard.propTypes = {
     id: PropTypes.string.isRequired
 };
-export default User;
+export default UserCard;
