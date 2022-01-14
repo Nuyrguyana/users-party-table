@@ -7,8 +7,6 @@ import GroupList from './common/groupList';
 import PropTypes from 'prop-types';
 import UsersTable from './ui/usersTable';
 import _ from 'lodash';
-import { useParams } from 'react-router-dom';
-import UserPage from './common/page/userPage/userPage';
 import SearchBar from './searchBar';
 
 const UsersMainComponent = () => {
@@ -18,11 +16,7 @@ const UsersMainComponent = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' });
     const pageSize = 8;
-    const params = useParams();
-    // const { search } = window.location;
-    // const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState('');
-    const { userId } = params;
 
     useEffect(() => {
         api.users.default
@@ -72,92 +66,87 @@ const UsersMainComponent = () => {
     const handleSort = (item) => {
         setSortBy(item);
     };
-    // отрисовка карточки пользователя в зависимости от наличия параметров(id пользователя) запроса
-    if (userId) {
-        return <UserPage id = {userId}/>;
-    } else {
         // пока массив пользователей не подтянулся, отображать Loading...
-        if (users.length > 0) {
-            const filteredBySearchUsers = filterUsers(users, searchQuery);
-            let filteredByProfessionsUsers;
-            // если выбрана профессия то фильтруем по профессиям, если нет - по поиску
-            if (selectedProf) {
-                // если в поле ввода есть текст, то при выбранной профессии сбросить набранный текст
-                if (searchQuery) {
-                    setSearchQuery('');
-                }
-                filteredByProfessionsUsers = users.filter((user) => user.profession === selectedProf);
-            } else {
-                filteredByProfessionsUsers = filteredBySearchUsers;
+    if (users.length > 0) {
+        const filteredBySearchUsers = filterUsers(users, searchQuery);
+        let filteredByProfessionsUsers;
+        // если выбрана профессия то фильтруем по профессиям, если нет - по поиску
+        if (selectedProf) {
+            // если в поле ввода есть текст, то при выбранной профессии сбросить набранный текст
+            if (searchQuery) {
+                setSearchQuery('');
             }
-            let count = filteredByProfessionsUsers.length;
-            const sortedUsers = _.orderBy(filteredByProfessionsUsers, [sortBy.path], [sortBy.order]);
-            const userCrop = paginate(sortedUsers, currentPage, pageSize);
+            filteredByProfessionsUsers = users.filter((user) => user.profession === selectedProf);
+        } else {
+            filteredByProfessionsUsers = filteredBySearchUsers;
+        }
+        let count = filteredByProfessionsUsers.length;
+        const sortedUsers = _.orderBy(filteredByProfessionsUsers, [sortBy.path], [sortBy.order]);
+        const userCrop = paginate(sortedUsers, currentPage, pageSize);
 
-            const handleDelete = (id) => {
-                setUsers((prevState) => prevState.filter((user) => user._id !== id));
-                count--;
-            };
+        const handleDelete = (id) => {
+            setUsers((prevState) => prevState.filter((user) => user._id !== id));
+            count--;
+        };
 
-            const getBadgeClasses = () => {
-                let classes = 'badge m-2 ';
-                classes += count === 0 ? 'bg-danger' : 'bg-primary';
-                return classes;
-            };
+        const getBadgeClasses = () => {
+            let classes = 'badge m-2 ';
+            classes += count === 0 ? 'bg-danger' : 'bg-primary';
+            return classes;
+        };
 
-            const renderUsersTable = () => {
-                return (
-                    <div className='d-flex flex-column'>
-                        <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
-                        <SearchBar
-                            searchQuery={searchQuery}
-                            setSearchQuery={setSearchQuery}
-                        />
-                        <UsersTable
-                            users={userCrop}
-                            onDelete={handleDelete}
-                            onSort={handleSort}
-                            selectedSort={sortBy}
-                            onToggleBookMark={handleToggleBookMark}
-                        />
-                        <div className='d-flex justify-content-center'>
-                            <Pagination
-                                itemsCount={count}
-                                pageSize={pageSize}
-                                currentPage={currentPage}
-                                onPageChange={handlePageChange}
-                            />
-                        </div>
-                    </div>
-                );
-            };
-
-            if (count === 0) {
-                return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
-            }
-
-            const clearFilter = () => {
-                setSelectedProf();
-            };
+        const renderUsersTable = () => {
             return (
-                <div className='d-flex'>
-                    {professions && (
-                        <div className="d-flex flex-column flex-shrink-0 p-3">
-                            <GroupList
-                                selectedItem={selectedProf}
-                                items={professions}
-                                onItemSelect={handleProfessionSelect}
-                            />
-                            <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
-                        </div>
-                    )}
-                    {renderUsersTable()}
-
+                <div className='d-flex flex-column'>
+                    <span className={getBadgeClasses()}>{<SearchStatus length={count}/>}</span>
+                    <SearchBar
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
+                    />
+                    <UsersTable
+                        users={userCrop}
+                        onDelete={handleDelete}
+                        onSort={handleSort}
+                        selectedSort={sortBy}
+                        onToggleBookMark={handleToggleBookMark}
+                    />
+                    <div className='d-flex justify-content-center'>
+                        <Pagination
+                            itemsCount={count}
+                            pageSize={pageSize}
+                            currentPage={currentPage}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
                 </div>
             );
-        } else {
-            return 'loading...';
+        };
+
+        if (count === 0) {
+            return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
         }
+
+        const clearFilter = () => {
+            setSelectedProf();
+        };
+        return (
+            <div className='d-flex'>
+                {professions && (
+                    <div className="d-flex flex-column flex-shrink-0 p-3">
+                        <GroupList
+                            selectedItem={selectedProf}
+                            items={professions}
+                            onItemSelect={handleProfessionSelect}
+                        />
+                        <button className='btn btn-secondary mt-2' onClick={clearFilter}>Очистить</button>
+                    </div>
+                )}
+                {renderUsersTable()}
+
+            </div>
+        );
+    } else {
+        return 'loading...';
     }
 };
 UsersMainComponent.propTypes = {

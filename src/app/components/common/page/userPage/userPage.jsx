@@ -3,8 +3,7 @@ import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../../../../../api';
 import Quality from '../../../ui/qualities/qualitie';
-const UserPage = ({ id }) => {
-    console.log(id);
+const UserPage = ({ userId }) => {
     const [user, setUser] = useState();
     const history = useHistory();
 
@@ -14,10 +13,9 @@ const UserPage = ({ id }) => {
 
     useEffect(() => {
         api.users.default
-            .getById(id)
+            .getById(userId)
             .then((data) => setUser(data));
     }, []);
-    console.log('user', user);
     if (user) {
         return <>
             <h2>{user.name}</h2>
@@ -34,6 +32,6 @@ const UserPage = ({ id }) => {
     }
 };
 UserPage.propTypes = {
-    id: PropTypes.string.isRequired
+    userId: PropTypes.string.isRequired
 };
 export default UserPage;
