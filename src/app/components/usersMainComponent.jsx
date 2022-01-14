@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../api';
-import SearchStatus from './searchStatus';
-import Pagination from './pagination';
+import SearchStatus from './ui/searchStatus';
+import Pagination from './common/pagination';
 import { paginate } from '../utils/paginate';
-import GroupList from './groupList';
+import GroupList from './common/groupList';
 import PropTypes from 'prop-types';
-import UsersTable from './usersTable';
+import UsersTable from './ui/usersTable';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
-import UserCard from '../layout/userCard';
+import UserPage from './common/page/userPage/userPage';
 import SearchBar from './searchBar';
 
 const UsersMainComponent = () => {
@@ -74,7 +74,7 @@ const UsersMainComponent = () => {
     };
     // отрисовка карточки пользователя в зависимости от наличия параметров(id пользователя) запроса
     if (userId) {
-        return <UserCard id = {userId}/>;
+        return <UserPage id = {userId}/>;
     } else {
         // пока массив пользователей не подтянулся, отображать Loading...
         if (users.length > 0) {

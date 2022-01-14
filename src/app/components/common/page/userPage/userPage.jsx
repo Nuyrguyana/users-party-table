@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import api from '../../api';
-import Quality from '../components/qualitie';
-const UserCard = ({ id }) => {
+import api from '../../../../../api';
+import Quality from '../../../ui/qualities/qualitie';
+const UserPage = ({ id }) => {
     console.log(id);
     const [user, setUser] = useState();
     const history = useHistory();
@@ -33,7 +33,7 @@ const UserCard = ({ id }) => {
         return 'Loading...';
     }
 };
-UserCard.propTypes = {
+UserPage.propTypes = {
     id: PropTypes.string.isRequired
 };
-export default UserCard;
+export default UserPage;
