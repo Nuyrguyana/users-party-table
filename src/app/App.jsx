@@ -1,5 +1,5 @@
 import React from 'react';
-import UsersMainComponent from './components/usersMainComponent';
+import UsersMainComponent from './components/page/userListPage/usersMainComponent';
 import NavBar from './components/ui/navBar';
 import Login from './layout/login';
 import Main from './layout/main';
