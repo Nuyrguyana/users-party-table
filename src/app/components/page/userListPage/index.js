@@ -1,3 +1,3 @@
-import UsersMainComponent from './usersMainComponent';
+import UsersListPage from './usersListPage';
 
-export default UsersMainComponent;
+export default UsersListPage;

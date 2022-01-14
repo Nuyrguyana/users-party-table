@@ -9,7 +9,7 @@ import UsersTable from '../../ui/usersTable';
 import _ from 'lodash';
 import SearchBar from '../../searchBar';
 
-const UsersMainComponent = () => {
+const UsersListPage = () => {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -149,7 +149,7 @@ const UsersMainComponent = () => {
         return 'loading...';
     }
 };
-UsersMainComponent.propTypes = {
+UsersListPage.propTypes = {
     users: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
-export default UsersMainComponent;
+export default UsersListPage;
