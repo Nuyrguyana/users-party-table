@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { validator } from '../../utils/validator';
 import TextField from '../common/form/textField';
+import api from '../../../api';
 
 const RegisterForm = () => {
-    const [data, setData] = useState({ email: '', password: '' });
+    const [data, setData] = useState({ email: '', password: '', profession: '' });
     const [errors, setErrors] = useState({});
+    const [professions, setProfessions] = useState();
+
+    useEffect(() => {
+        api.professions
+            .fetchAll()
+            .then((data) => setProfessions(data));
+    }, []);
+
     const handleChange = ({ target }) => {
         setData((prevState) => ({
             ...prevState,
@@ -60,6 +69,34 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
+            <div className="mb-4">
+                <label htmlFor="validationCustom04" className="form-label">
+                    State
+                </label>
+                <select
+                    className="form-select"
+                    id="validationCustom04"
+                    name='profession'
+                    value={data.profession}
+                    onChange={handleChange}
+                >
+                    <option disabled value="">
+                        Choose...
+                    </option>
+                    {professions &&
+                    Object.keys(professions).map((professionName) => (
+                        <option
+                            value={professions[professionName]._id}
+                            key={professions[professionName]._id}
+                        >
+                            {professions[professionName].name}
+                        </option>
+                    ))}
+                </select>
+                <div className="invalid-feedback">
+                    Please select a valid state.
+                </div>
+            </div>
             <button type='submit' disabled={!isValid} className='btn btn-primary w-100 mx-auto'>
                 Submit
             </button>
