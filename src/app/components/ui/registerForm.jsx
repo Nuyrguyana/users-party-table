@@ -102,6 +102,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 value={data.profession}
                 error={errors.profession}
+                name='professions'
             />
             <RadioField
                 options={[
@@ -119,6 +120,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 name='qualities'
                 label='Выберите ваши качества'
+                defaultValue={data.qualities}
             />
             <CheckBoxField
                 value={data.licence}

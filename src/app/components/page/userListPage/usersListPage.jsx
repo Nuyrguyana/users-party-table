@@ -17,9 +17,8 @@ const UsersListPage = () => {
     const [sortBy, setSortBy] = useState({ iter: 'name', order: 'asc' });
     const pageSize = 8;
     const [searchQuery, setSearchQuery] = useState('');
-
     useEffect(() => {
-        api.users.default
+        api.users
             .fetchAll()
             .then((data) => setUsers(data));
     }, []);
