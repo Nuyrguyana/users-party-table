@@ -32,6 +32,7 @@ const LoginForm = () => {
     useEffect(() => {
         validate();
     }, [data]);
+
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
@@ -63,7 +64,7 @@ const LoginForm = () => {
             />
             <CheckBoxField
                 value={data.stayOn}
-                onChahge={handleChange}
+                onChange={handleChange}
                 name='stayOn'
             >
                 Оставаться в системе

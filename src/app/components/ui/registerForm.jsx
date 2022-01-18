@@ -122,7 +122,7 @@ const RegisterForm = () => {
             />
             <CheckBoxField
                 value={data.licence}
-                onChahge={handleChange}
+                onChange={handleChange}
                 name='licence'
                 error={errors.licence}
             >
