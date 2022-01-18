@@ -20,7 +20,7 @@ const UserPage = ({ userId }) => {
         return <>
             <h2>{user.name}</h2>
             <h3>{user.profession.name}</h3>
-            {user.qualities.map((qual) => (<Qualities key={qual._id} {...qual} />))}
+            <Qualities qualities={user.qualities} />
             <h5>completedMeetings: {user.completedMeetings}</h5>
             <h3>rate: {user.rate}</h3>
             <button onClick={() => { handleAllUsers(); }}>
