@@ -12,7 +12,7 @@ const UserPage = ({ userId }) => {
     };
 
     useEffect(() => {
-        api.users.default
+        api.users
             .getById(userId)
             .then((data) => setUser(data));
     }, []);
