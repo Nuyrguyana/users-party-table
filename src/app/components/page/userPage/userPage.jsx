@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import api from '../../api';
-import Quality from '../components/qualitie';
-const UserCard = ({ id }) => {
-    console.log(id);
+import api from '../../../../api';
+import Qualities from '../../ui/qualities/qualitiesList';
+const UserPage = ({ userId }) => {
     const [user, setUser] = useState();
     const history = useHistory();
 
@@ -13,16 +12,15 @@ const UserCard = ({ id }) => {
     };
 
     useEffect(() => {
-        api.users.default
-            .getById(id)
+        api.users
+            .getById(userId)
             .then((data) => setUser(data));
     }, []);
-    console.log('user', user);
     if (user) {
         return <>
             <h2>{user.name}</h2>
             <h3>{user.profession.name}</h3>
-            {user.qualities.map((qual) => (<Quality key={qual._id} {...qual} />))}
+            <Qualities qualities={user.qualities} />
             <h5>completedMeetings: {user.completedMeetings}</h5>
             <h3>rate: {user.rate}</h3>
             <button onClick={() => { handleAllUsers(); }}>
@@ -33,7 +31,7 @@ const UserCard = ({ id }) => {
         return 'Loading...';
     }
 };
-UserCard.propTypes = {
-    id: PropTypes.string.isRequired
+UserPage.propTypes = {
+    userId: PropTypes.string.isRequired
 };
-export default UserCard;
+export default UserPage;
