@@ -122,7 +122,14 @@ const UsersListPage = () => {
         };
 
         if (count === 0) {
-            return <span className={getBadgeClasses()}>{SearchStatus(users)}</span>;
+            const emptyArr = [];
+            return <>
+                <span className={getBadgeClasses()}>{SearchStatus(emptyArr)}</span>
+                <SearchBar
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
+                />
+            </>;
         }
 
         const clearFilter = () => {
