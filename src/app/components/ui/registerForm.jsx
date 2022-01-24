@@ -4,7 +4,7 @@ import TextField from '../common/form/textField';
 import api from '../../../api';
 import SelectField from '../common/form/selectField';
 import RadioField from '../common/form/radioField';
-import MultiSelectField from '../common/form/MultiSelectField';
+import MultiSelectField from '../common/form/multiSelectField';
 import CheckBoxField from '../common/form/checkBoxField';
 
 const RegisterForm = () => {
@@ -102,7 +102,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 value={data.profession}
                 error={errors.profession}
-                name='professions'
+                name='profession'
             />
             <RadioField
                 options={[

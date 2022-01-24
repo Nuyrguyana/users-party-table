@@ -17,7 +17,6 @@ const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
             </label>
             <Select
                 isMulti
-                defaultValue={defaultValue}
                 closeMenuOnSelect={false}
                 options={optionsArray}
                 onChange={handleChange}
