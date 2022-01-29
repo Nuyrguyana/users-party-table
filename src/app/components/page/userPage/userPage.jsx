@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import api from '../../../../api';
 import Qualities from '../../ui/qualities/qualitiesList';
+
 const UserPage = ({ userId }) => {
     const [user, setUser] = useState();
     const history = useHistory();
-
     const handleAllUsers = () => {
         history.push('/users');
     };
@@ -16,6 +16,7 @@ const UserPage = ({ userId }) => {
             .getById(userId)
             .then((data) => setUser(data));
     }, []);
+
     if (user) {
         return <>
             <h2>{user.name}</h2>
@@ -26,6 +27,7 @@ const UserPage = ({ userId }) => {
             <button onClick={() => { handleAllUsers(); }}>
             Все пользователи
             </button>
+            <Link to={`/users/${userId}/edit`} className="btn btn-primary">Изменить</Link>
         </>;
     } else {
         return 'Loading...';
