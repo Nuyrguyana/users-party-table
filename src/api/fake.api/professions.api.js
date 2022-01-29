@@ -46,7 +46,11 @@ const fetchAll = () =>
             resolve(professionsObject);
         }, 2000);
     });
-
+const getProfById = (id) => {
+    const professionIndex = professions.findIndex((p) => p._id === id);
+    return professions[professionIndex];
+};
 export default {
-    fetchAll
+    fetchAll,
+    getProfById
 };

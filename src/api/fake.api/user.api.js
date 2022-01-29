@@ -1,4 +1,5 @@
-import { professionsObject as professions } from './professions.api';
+import professionsApi, { professionsObject as professions } from './professions.api';
+
 const qualities = {
     tedious: {
         _id: '67rdca3eeb7f6fgeed471198',
@@ -178,6 +179,10 @@ const fetchAll = () =>
     });
 const update = (id, data) =>
     new Promise((resolve) => {
+        console.log('data', data);
+        data.profession = professionsApi.getProfById(data.profession);
+        const updatedQualities = data.qualities.map((q) => getQualById(q.value));
+        data.qualities = updatedQualities;
         const users = JSON.parse(localStorage.getItem('users'));
         const userIndex = users.findIndex((u) => u._id === id);
         users[userIndex] = { ...users[userIndex], ...data };
@@ -185,6 +190,13 @@ const update = (id, data) =>
         localStorage.setItem('users', JSON.stringify(users));
         resolve(users[userIndex]);
     });
+
+const getQualById = (id) => {
+    const qualKeys = Object.keys(qualities); // ['uncertain','handsome',...]
+    const indexQualKey = qualKeys.findIndex((key) => qualities[key]._id === id);
+    const quality = qualities[qualKeys[indexQualKey]];
+    return quality;
+};
 
 const getById = (id) =>
     new Promise((resolve) => {
