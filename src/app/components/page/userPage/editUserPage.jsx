@@ -5,10 +5,11 @@ import RadioField from '../../common/form/radioField';
 import MultiSelectField from '../../common/form/multiSelectField';
 import { validator } from '../../../utils/validator';
 import api from '../../../../api';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 const EditUserPage = () => {
     const { userId } = useParams();
+    const history = useHistory();
     const [data, setData] = useState({
         name: '',
         email: '',
@@ -63,6 +64,13 @@ const EditUserPage = () => {
         if (!isValid) return;
         console.log(data);
     };
+
+    const handleClick = () => {
+        api.users
+            .update(userId, data)
+            .then((data) => console.log(data));
+        history.push(`/users/${userId}`);
+    };
     return <div className='container mt-5'>
         <div className='row'>
             <div className='col-md-6 offset-md-3 shadow p-4'>
@@ -109,6 +117,7 @@ const EditUserPage = () => {
                         defaultValue={data.qualities}
                     />
                     <button
+                        onClick={handleClick}
                         type='submit'
                         disabled={!isValid}
                         className='btn btn-primary w-100 mx-auto'
