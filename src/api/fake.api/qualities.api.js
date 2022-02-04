@@ -37,6 +37,18 @@ const fetchAll = () =>
         }, 2000);
     });
 
+const getQualById = (notFullQualArray) => {
+    const qualKeys = Object.keys(qualities);
+    const qualKeyIndex = [];
+    notFullQualArray.forEach((notFullQual) => {
+        const index = qualKeys.findIndex((qkey) => qualities[qkey]._id === notFullQual.value);
+        qualKeyIndex.push(index);
+    });
+    return qualKeyIndex.map((indx) => {
+        return qualities[qualKeys[indx]];
+    });
+};
 export default {
-    fetchAll
+    fetchAll,
+    getQualById
 };
