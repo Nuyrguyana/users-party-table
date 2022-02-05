@@ -10,7 +10,7 @@ import { useHistory, useParams } from 'react-router-dom';
 const EditUserPage = () => {
     const { userId } = useParams();
     const history = useHistory();
-    const [data, setData] = useState({});
+    const [data, setData] = useState();
     const [errors, setErrors] = useState({});
     const [qualities, setQualities] = useState({});
     const [professions, setProfessions] = useState();
@@ -29,22 +29,26 @@ const EditUserPage = () => {
 
     const handleChange = (target) => {
         if (target.name === 'profession') {
-            const updatedProf = api.professions.getProfById(target.value);
-            console.log('updatedProf', updatedProf);
-            setData((prevState) => ({
-                ...prevState,
-                [target.name]: updatedProf
-            }));
-            console.log('data.prof', data.profession);
+            console.log('prof', professions);
+            const profKeys = Object.keys(professions);
+            const profIndex = profKeys.findIndex((profKey) => professions[profKey]._id === target.value);
+            setData((prevState) => {
+                prevState.profession = professions[profKeys[profIndex]];
+                return prevState;
+            });
         } else if (target.name === 'qualities') {
-            console.log('tar', target.value);
-            const updatedQuals = api.qualities.getQualById(target.value);
-            console.log('updatedQuals', updatedQuals);
-            setData((prevState) => ({
-                ...prevState,
-                [target.name]: updatedQuals
-            }));
-            console.log('data.qualities', data.qualities);
+            const qualKeys = Object.keys(qualities);
+            const targetValues = target.value;
+            const updatedQualitiesList = [];
+            targetValues.forEach((val) => {
+                const qualIndex = qualKeys.findIndex((qualKeys) => qualities[qualKeys]._id === val.value);
+                updatedQualitiesList.push(qualities[qualKeys[qualIndex]]);
+            });
+            setData((prevState) => {
+                prevState.qualities = updatedQualitiesList;
+                return prevState;
+            });
+            console.log('data', data);
         } else {
             setData((prevState) => ({
                 ...prevState,
@@ -52,6 +56,7 @@ const EditUserPage = () => {
             }));
         }
     };
+
     const validatorConfig = {
         email: {
             isRequired: { message: 'Электронная почта обязательна для заполнения' },
