@@ -71,11 +71,12 @@ const UsersListPage = () => {
         let filteredByProfessionsUsers;
         // если выбрана профессия то фильтруем по профессиям, если нет - по поиску
         if (selectedProf) {
+            console.log('selprof', selectedProf);
             // если в поле ввода есть текст, то при выбранной профессии сбросить набранный текст
             if (searchQuery) {
                 setSearchQuery('');
             }
-            filteredByProfessionsUsers = users.filter((user) => user.profession === selectedProf);
+            filteredByProfessionsUsers = users.filter((user) => user.profession.name === selectedProf.name);
         } else {
             filteredByProfessionsUsers = filteredBySearchUsers;
         }
